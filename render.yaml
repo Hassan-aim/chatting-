@@ -7,13 +7,9 @@ services:
       - key: ENVIRONMENT
         value: production
       - key: DATABASE_URL
-        fromDatabase:
-          name: nexus-db
-          property: connectionString
+        value: "mysql+aiomysql://user:password@your-mysql-host:3306/private_chat"
       - key: DATABASE_URL_SYNC
-        fromDatabase:
-          name: nexus-db
-          property: connectionString
+        value: "mysql+pymysql://user:password@your-mysql-host:3306/private_chat"
       - key: JWT_SECRET_KEY
         generateValue: true
       - key: CORS_ORIGINS
@@ -21,10 +17,3 @@ services:
       - key: STORAGE_PATH
         value: ./storage
     healthCheckPath: /health
-    # Render provides postgresql:// URLs, but the app needs driver-specific
-    # prefixes. The Dockerfile start script handles this automatically.
-
-databases:
-  - name: nexus-db
-    plan: free
-    databaseName: private_chat

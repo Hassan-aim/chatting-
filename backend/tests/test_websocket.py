@@ -1,6 +1,6 @@
-"""WebSocket integration tests requiring PostgreSQL.
+"""WebSocket integration tests requiring MySQL.
 
-Run after `docker compose up -d postgres` and `alembic upgrade head`.
+Run after `docker compose up -d mysql` and `alembic upgrade head`.
 """
 
 from __future__ import annotations
@@ -15,7 +15,7 @@ from app.main import create_app
 
 pytestmark = pytest.mark.skipif(
     os.environ.get("RUN_DB_TESTS") != "1",
-    reason="Set RUN_DB_TESTS=1 with a live PostgreSQL instance",
+    reason="Set RUN_DB_TESTS=1 with a live MySQL instance",
 )
 
 

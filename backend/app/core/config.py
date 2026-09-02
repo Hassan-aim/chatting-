@@ -17,8 +17,8 @@ class Settings(BaseSettings):
     backend_host: str = "0.0.0.0"
     backend_port: int = 8000
 
-    database_url: str = "postgresql+asyncpg://chat:changeme@localhost:5432/private_chat"
-    database_url_sync: str = "postgresql+psycopg://chat:changeme@localhost:5432/private_chat"
+    database_url: str = "mysql+aiomysql://chat:changeme@localhost:3306/private_chat"
+    database_url_sync: str = "mysql+pymysql://chat:changeme@localhost:3306/private_chat"
     db_pool_size: int = 10
     db_max_overflow: int = 20
 
