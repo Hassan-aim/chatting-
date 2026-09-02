@@ -17,32 +17,12 @@ services:
       - key: JWT_SECRET_KEY
         generateValue: true
       - key: CORS_ORIGINS
-        fromService:
-          name: nexus-frontend
-          type: web
-          property: url
+        value: "https://your-app.vercel.app"
       - key: STORAGE_PATH
         value: ./storage
     healthCheckPath: /health
     # Render provides postgresql:// URLs, but the app needs driver-specific
     # prefixes. The Dockerfile start script handles this automatically.
-
-  - type: web
-    name: nexus-frontend
-    runtime: static
-    buildCommand: cd frontend && npm install && npm run build
-    staticPublishPath: frontend/dist
-    envVars:
-      - key: VITE_API_BASE_URL
-        fromService:
-          name: nexus-backend
-          type: web
-          property: url
-      - key: VITE_WS_BASE_URL
-        fromService:
-          name: nexus-backend
-          type: web
-          property: url
 
 databases:
   - name: nexus-db
