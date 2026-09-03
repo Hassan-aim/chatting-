@@ -20,7 +20,7 @@ class Settings(BaseSettings):
     database_url: str = "mysql+aiomysql://chat:changeme@localhost:3306/private_chat"
     database_url_sync: str = ""
 
-    @field_validator("database_url", mode="before")
+    @field_validator("database_url", "database_url_sync", mode="before")
     @classmethod
     def strip_database_url(cls, value: str) -> str:
         return value.strip()
