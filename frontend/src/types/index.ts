@@ -34,6 +34,17 @@ export interface Conversation {
   last_message_preview: string | null;
   last_message_at: string | null;
   unread_count: number;
+  is_pinned: boolean;
+  is_muted: boolean;
+}
+
+export interface SearchMessage {
+  id: string;
+  conversation_id: string;
+  sender_id: string;
+  sender_username: string | null;
+  content: string | null;
+  created_at: string;
 }
 
 export interface Attachment {

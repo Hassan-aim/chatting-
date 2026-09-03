@@ -4,6 +4,8 @@ import LandingPage from "./pages/LandingPage";
 import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { ChatPage } from "./pages/ChatPage";
+import { SettingsPage } from "./pages/SettingsPage";
+import { SearchPage } from "./pages/SearchPage";
 import { ProtectedRoute } from "./routes/ProtectedRoute";
 import { useChatUi } from "./store/chatUi";
 
@@ -37,6 +39,22 @@ export default function App() {
         element={
           <ProtectedRoute>
             <ChatPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/settings"
+        element={
+          <ProtectedRoute>
+            <SettingsPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/search"
+        element={
+          <ProtectedRoute>
+            <SearchPage />
           </ProtectedRoute>
         }
       />

@@ -43,6 +43,26 @@ async def get_conversation(
     return success_body(item.model_dump(mode="json"))
 
 
+@router.post("/{conversation_id}/pin")
+async def toggle_pin(
+    conversation_id: UUID,
+    current: User = Depends(get_current_user),
+    service: ConversationService = Depends(get_conversation_service),
+) -> dict:
+    is_pinned = await service.toggle_pin(conversation_id, current.id)
+    return success_body({"is_pinned": is_pinned})
+
+
+@router.post("/{conversation_id}/mute")
+async def toggle_mute(
+    conversation_id: UUID,
+    current: User = Depends(get_current_user),
+    service: ConversationService = Depends(get_conversation_service),
+) -> dict:
+    is_muted = await service.toggle_mute(conversation_id, current.id)
+    return success_body({"is_muted": is_muted})
+
+
 @router.get("/{conversation_id}/messages")
 async def list_messages(
     conversation_id: UUID,

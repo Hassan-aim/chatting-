@@ -9,6 +9,9 @@ import {
   ArrowRight,
   Shield,
   Check,
+  Share2,
+  Smartphone,
+  Globe,
 } from "lucide-react";
 import { Button } from "../components/common/Button";
 
@@ -41,23 +44,17 @@ function Nav() {
         </Link>
 
         <div className="hidden items-center gap-8 md:flex">
-          <a
-            href="#features"
-            className="text-sm text-slate-400 transition hover:text-white"
-          >
+          <a href="#features" className="text-sm text-slate-400 transition hover:text-white">
             Features
           </a>
-          <a
-            href="#security"
-            className="text-sm text-slate-400 transition hover:text-white"
-          >
+          <a href="#security" className="text-sm text-slate-400 transition hover:text-white">
             Security
           </a>
-          <a
-            href="#how-it-works"
-            className="text-sm text-slate-400 transition hover:text-white"
-          >
+          <a href="#how-it-works" className="text-sm text-slate-400 transition hover:text-white">
             How it works
+          </a>
+          <a href="#whatsapp" className="text-sm text-slate-400 transition hover:text-white">
+            WhatsApp
           </a>
         </div>
 
@@ -87,9 +84,14 @@ function Hero() {
 
   return (
     <section className="relative flex min-h-[100dvh] items-center overflow-hidden pt-20">
+      {/* Subtle radial glow */}
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute left-1/2 top-1/3 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent/5 blur-[120px]" />
+      </div>
+
       {/* Background grid */}
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.03]"
+        className="pointer-events-none absolute inset-0 opacity-[0.02]"
         style={{
           backgroundImage:
             "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
@@ -137,7 +139,7 @@ function Hero() {
           </motion.div>
         </div>
 
-        {/* Right: visual */}
+        {/* Right: visual - chat mockup */}
         <motion.div
           initial={reduce ? false : { opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -147,55 +149,27 @@ function Hero() {
           <div className="relative rounded-2xl border border-white/10 bg-ink-900 p-1">
             <div className="overflow-hidden rounded-xl">
               <img
-                src="https://picsum.photos/seed/nexus-chat-dark/800/520"
+                src="https://picsum.photos/seed/nexus-chat-mockup/800/520"
                 alt="Nexus chat interface preview"
                 className="h-auto w-full object-cover"
                 loading="eager"
               />
             </div>
-            {/* Floating status badge */}
+            {/* Floating status badges */}
             <div className="absolute -bottom-4 -left-4 flex items-center gap-2 rounded-xl border border-white/10 bg-ink-900 px-4 py-2.5 shadow-lg">
               <div className="h-2 w-2 rounded-full bg-emerald-400" />
               <span className="text-xs font-medium text-slate-300">
                 2 users online
               </span>
             </div>
+            <div className="absolute -top-3 -right-3 flex items-center gap-1.5 rounded-xl border border-white/10 bg-ink-900 px-3 py-2 shadow-lg">
+              <Lock className="h-3 w-3 text-emerald-400" />
+              <span className="text-[11px] font-medium text-slate-300">
+                Encrypted
+              </span>
+            </div>
           </div>
         </motion.div>
-      </div>
-    </section>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/*  Trusted by                                                         */
-/* ------------------------------------------------------------------ */
-function TrustedBy() {
-  const logos = [
-    { name: "Vercel", slug: "vercel" },
-    { name: "Linear", slug: "linear" },
-    { name: "Supabase", slug: "supabase" },
-    { name: "Resend", slug: "resend" },
-    { name: "Railway", slug: "railway" },
-  ];
-
-  return (
-    <section className="border-t border-white/5 py-16">
-      <div className="mx-auto max-w-7xl px-6">
-        <p className="mb-8 text-center text-xs uppercase tracking-[0.18em] text-slate-500">
-          Trusted by teams who ship fast
-        </p>
-        <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6">
-          {logos.map((logo) => (
-            <img
-              key={logo.slug}
-              src={`https://cdn.simpleicons.org/${logo.slug}/64748b`}
-              alt={logo.name}
-              className="h-6 opacity-40 grayscale transition hover:opacity-70 hover:grayscale-0"
-              loading="lazy"
-            />
-          ))}
-        </div>
       </div>
     </section>
   );
@@ -291,7 +265,7 @@ function Features() {
 }
 
 /* ------------------------------------------------------------------ */
-/*  How it works - Zig-zag                                             */
+/*  How it works                                                       */
 /* ------------------------------------------------------------------ */
 function HowItWorks() {
   const reduce = useReducedMotion();
@@ -360,6 +334,120 @@ function HowItWorks() {
 }
 
 /* ------------------------------------------------------------------ */
+/*  WhatsApp Integration                                               */
+/* ------------------------------------------------------------------ */
+function WhatsAppIntegration() {
+  const reduce = useReducedMotion();
+
+  const handleShare = () => {
+    const text = encodeURIComponent(
+      "Check out Nexus - a private, encrypted chat app. Real-time messaging with no metadata collection. Try it here:",
+    );
+    const url = encodeURIComponent(window.location.origin);
+    window.open(`https://wa.me/?text=${text}%20${url}`, "_blank");
+  };
+
+  const handleShareGroup = () => {
+    const text = encodeURIComponent(
+      "I'm using Nexus for private, encrypted chat. Join me! Real-time messaging, file sharing, and read receipts. No tracking, no metadata collection.",
+    );
+    const url = encodeURIComponent(window.location.origin);
+    window.open(`https://wa.me/?text=${text}%20${url}`, "_blank");
+  };
+
+  return (
+    <section id="whatsapp" className="py-24">
+      <div className="mx-auto max-w-7xl px-6">
+        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
+          <motion.div
+            initial={reduce ? false : { opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-emerald-400">
+              <Smartphone className="h-3 w-3" />
+              Share on WhatsApp
+            </div>
+            <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
+              Invite friends via WhatsApp
+            </h2>
+            <p className="mt-3 max-w-lg text-base text-slate-400">
+              Share Nexus with your contacts on WhatsApp. One tap to send an
+              invitation link. They can create an account and start chatting
+              privately in seconds.
+            </p>
+
+            <div className="mt-8 flex flex-wrap gap-3">
+              <button
+                type="button"
+                onClick={handleShare}
+                className="inline-flex items-center gap-2 rounded-xl bg-[#25D366] px-5 py-3 text-sm font-medium text-white transition hover:bg-[#20BD5A] active:scale-[0.98]"
+              >
+                <Share2 className="h-4 w-4" />
+                Share on WhatsApp
+              </button>
+              <button
+                type="button"
+                onClick={handleShareGroup}
+                className="inline-flex items-center gap-2 rounded-xl bg-white/5 border border-white/10 px-5 py-3 text-sm font-medium text-slate-300 transition hover:bg-white/10 hover:text-white active:scale-[0.98]"
+              >
+                <Globe className="h-4 w-4" />
+                Share in Group
+              </button>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={reduce ? false : { opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className="relative"
+          >
+            <div className="rounded-2xl border border-white/5 bg-ink-900 p-8">
+              <div className="space-y-4">
+                <div className="flex items-start gap-3">
+                  <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#25D366]/20">
+                    <MessageCircle className="h-5 w-5 text-[#25D366]" />
+                  </div>
+                  <div className="rounded-2xl rounded-tl-md bg-white/[0.07] p-3">
+                    <p className="text-sm text-slate-200">
+                      Hey! I found this amazing private chat app. No tracking, fully encrypted. You should try it!
+                    </p>
+                    <p className="mt-1 text-[11px] text-slate-500">
+                      {window.location.origin}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 flex-row-reverse">
+                  <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-accent/20">
+                    <MessageCircle className="h-5 w-5 text-accent" />
+                  </div>
+                  <div className="rounded-2xl rounded-tr-md bg-accent/20 p-3">
+                    <p className="text-sm text-slate-200">
+                      Sounds great! I hate how other apps read my messages. Signing up now.
+                    </p>
+                    <p className="mt-1 text-[11px] text-slate-500">
+                      Just now
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-6 pt-4 border-t border-white/5">
+                <p className="text-xs text-slate-500 text-center">
+                  Share Nexus with friends on WhatsApp
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /*  Security                                                           */
 /* ------------------------------------------------------------------ */
 function Security() {
@@ -375,7 +463,7 @@ function Security() {
   ];
 
   return (
-    <section id="security" className="py-24">
+    <section id="security" className="border-t border-white/5 py-24">
       <div className="mx-auto max-w-7xl px-6">
         <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-2 lg:gap-16">
           <div>
@@ -435,13 +523,25 @@ function CTA() {
             Stop wondering who can read your messages. Start chatting with
             confidence.
           </p>
-          <div className="mt-8">
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <Link to="/register">
               <Button variant="primary" className="px-8 py-3 text-sm">
                 Create your account
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </Link>
+            <button
+              type="button"
+              onClick={() => {
+                const text = encodeURIComponent("Check out Nexus - a private, encrypted chat app:");
+                const url = encodeURIComponent(window.location.origin);
+                window.open(`https://wa.me/?text=${text}%20${url}`, "_blank");
+              }}
+              className="inline-flex items-center gap-2 rounded-xl bg-[#25D366]/10 border border-[#25D366]/20 px-5 py-3 text-sm font-medium text-[#25D366] transition hover:bg-[#25D366]/20"
+            >
+              <Share2 className="h-4 w-4" />
+              Share on WhatsApp
+            </button>
           </div>
         </motion.div>
       </div>
@@ -473,6 +573,9 @@ function Footer() {
           <a href="#how-it-works" className="transition hover:text-slate-300">
             How it works
           </a>
+          <a href="#whatsapp" className="transition hover:text-slate-300">
+            Share
+          </a>
         </div>
 
         <span>Private chat, built with care.</span>
@@ -489,9 +592,9 @@ export default function LandingPage() {
     <div className="min-h-[100dvh]">
       <Nav />
       <Hero />
-      <TrustedBy />
       <Features />
       <HowItWorks />
+      <WhatsAppIntegration />
       <Security />
       <CTA />
       <Footer />

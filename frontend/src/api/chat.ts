@@ -4,6 +4,7 @@ import type {
   Attachment,
   ChatMessage,
   Conversation,
+  SearchMessage,
   Tokens,
   UserBrief,
   UserPublic,
@@ -111,4 +112,38 @@ export async function uploadFile(
 export function attachmentUrl(id: string) {
   const base = import.meta.env.VITE_API_BASE_URL || "";
   return `${base}/api/attachments/${id}`;
+}
+
+export async function updateProfile(data: { username?: string; email?: string }) {
+  const { data: res } = await api.patch<ApiSuccess<UserPublic>>("/api/users/me", data);
+  return res.data;
+}
+
+export async function changePassword(currentPassword: string, newPassword: string) {
+  const { data: res } = await api.post<ApiSuccess<{ ok: boolean }>>(
+    "/api/users/me/change-password",
+    { current_password: currentPassword, new_password: newPassword },
+  );
+  return res.data;
+}
+
+export async function searchMessages(q: string, conversationId?: string) {
+  const { data: res } = await api.get<ApiSuccess<SearchMessage[]>>("/api/messages/search", {
+    params: { q, conversation_id: conversationId },
+  });
+  return res.data;
+}
+
+export async function togglePin(conversationId: string) {
+  const { data: res } = await api.post<ApiSuccess<{ is_pinned: boolean }>>(
+    `/api/conversations/${conversationId}/pin`,
+  );
+  return res.data;
+}
+
+export async function toggleMute(conversationId: string) {
+  const { data: res } = await api.post<ApiSuccess<{ is_muted: boolean }>>(
+    `/api/conversations/${conversationId}/mute`,
+  );
+  return res.data;
 }

@@ -29,6 +29,15 @@ class ConversationRepository:
         )
         return result.scalar_one_or_none()
 
+    async def get_member(self, conversation_id: UUID, user_id: UUID) -> ConversationMember | None:
+        result = await self.session.execute(
+            select(ConversationMember).where(
+                ConversationMember.conversation_id == conversation_id,
+                ConversationMember.user_id == user_id,
+            )
+        )
+        return result.scalar_one_or_none()
+
     async def is_member(self, conversation_id: UUID, user_id: UUID) -> bool:
         result = await self.session.execute(
             select(ConversationMember.id).where(

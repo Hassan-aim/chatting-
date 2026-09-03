@@ -3,7 +3,7 @@ from uuid import UUID
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.errors import ForbiddenError, NotFoundError
-from app.models import Conversation, User
+from app.models import Conversation, ConversationMember, User
 from app.repositories.conversation_repo import ConversationRepository
 from app.repositories.user_repo import UserRepository
 from app.schemas.auth import UserBrief
@@ -40,10 +40,27 @@ class ConversationService:
         conversation = await self.get_for_member(conversation_id, user_id)
         return await self._to_out(conversation, user_id)
 
+    async def toggle_pin(self, conversation_id: UUID, user_id: UUID) -> bool:
+        member = await self.conversations.get_member(conversation_id, user_id)
+        if member is None:
+            raise ForbiddenError("You are not a member of this conversation")
+        member.is_pinned = not member.is_pinned
+        await self.conversations.session.flush()
+        return member.is_pinned
+
+    async def toggle_mute(self, conversation_id: UUID, user_id: UUID) -> bool:
+        member = await self.conversations.get_member(conversation_id, user_id)
+        if member is None:
+            raise ForbiddenError("You are not a member of this conversation")
+        member.is_muted = not member.is_muted
+        await self.conversations.session.flush()
+        return member.is_muted
+
     async def _to_out(self, conversation: Conversation, user_id: UUID) -> ConversationOut:
         peer = next(m.user for m in conversation.members if m.user_id != user_id)
         preview, last_at = await self.conversations.last_message_preview(conversation.id)
         unread = await self.conversations.unread_count(conversation.id, user_id)
+        member = next((m for m in conversation.members if m.user_id == user_id), None)
         return ConversationOut(
             id=conversation.id,
             created_at=conversation.created_at,
@@ -52,4 +69,6 @@ class ConversationService:
             last_message_preview=preview,
             last_message_at=last_at,  # type: ignore[arg-type]
             unread_count=unread,
+            is_pinned=member.is_pinned if member else False,
+            is_muted=member.is_muted if member else False,
         )

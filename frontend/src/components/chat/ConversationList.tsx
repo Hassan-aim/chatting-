@@ -1,15 +1,16 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 import { useConversations } from "../../hooks/useChatQueries";
 import { useAuthStore } from "../../store/auth";
-import { logout } from "../../api/chat";
+import { logout, togglePin, toggleMute } from "../../api/chat";
 import type { Conversation } from "../../types";
 import { UserAvatar } from "../common/UserAvatar";
 import { Skeleton } from "../common/Skeleton";
 import { NewConversationModal } from "./NewConversationModal";
 import { cn } from "../../utils/cn";
-import { Plus, LogOut, MessageSquare } from "lucide-react";
+import { Plus, LogOut, MessageSquare, Search, Settings, Pin, PinOff, BellOff, Bell } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query"
 
 interface ConversationListProps {
   activeId?: string;
@@ -21,6 +22,15 @@ export function ConversationList({ activeId }: ConversationListProps) {
   const [newModalOpen, setNewModalOpen] = useState(false);
   const currentUser = useAuthStore((s) => s.user);
   const { clear, refreshToken } = useAuthStore();
+  const queryClient = useQueryClient();
+
+  const sortedConversations = useMemo(() => {
+    if (!conversations) return [];
+    return [...conversations].sort((a, b) => {
+      if (a.is_pinned !== b.is_pinned) return a.is_pinned ? -1 : 1;
+      return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
+    });
+  }, [conversations]);
 
   const handleLogout = useCallback(async () => {
     try {
@@ -41,6 +51,22 @@ export function ConversationList({ activeId }: ConversationListProps) {
           <h1 className="text-lg font-semibold text-slate-100">Nexus</h1>
         </div>
         <div className="flex items-center gap-1">
+          <button
+            type="button"
+            onClick={() => navigate("/search")}
+            className="grid h-8 w-8 place-items-center rounded-lg text-slate-400 transition-all hover:bg-white/10 hover:text-white active:-translate-y-[1px]"
+            aria-label="Search messages"
+          >
+            <Search className="h-4 w-4 stroke-[1.5]" />
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate("/settings")}
+            className="grid h-8 w-8 place-items-center rounded-lg text-slate-400 transition-all hover:bg-white/10 hover:text-white active:-translate-y-[1px]"
+            aria-label="Settings"
+          >
+            <Settings className="h-4 w-4 stroke-[1.5]" />
+          </button>
           <button
             type="button"
             onClick={() => setNewModalOpen(true)}
@@ -103,12 +129,20 @@ export function ConversationList({ activeId }: ConversationListProps) {
           </div>
         )}
 
-        {conversations?.map((conv) => (
+        {sortedConversations.map((conv) => (
           <ConversationItem
             key={conv.id}
             conversation={conv}
             active={conv.id === activeId}
             onClick={() => navigate(`/c/${conv.id}`)}
+            onTogglePin={async () => {
+              await togglePin(conv.id);
+              void queryClient.invalidateQueries({ queryKey: ["conversations"] });
+            }}
+            onToggleMute={async () => {
+              await toggleMute(conv.id);
+              void queryClient.invalidateQueries({ queryKey: ["conversations"] });
+            }}
           />
         ))}
       </nav>
@@ -125,10 +159,14 @@ function ConversationItem({
   conversation,
   active,
   onClick,
+  onTogglePin,
+  onToggleMute,
 }: {
   conversation: Conversation;
   active: boolean;
   onClick: () => void;
+  onTogglePin: () => void;
+  onToggleMute: () => void;
 }) {
   const peer = conversation.peer;
   const time = conversation.last_message_at
@@ -138,42 +176,77 @@ function ConversationItem({
     : "";
 
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={cn(
-        "flex w-full items-center gap-3 px-3 py-3 text-left transition",
-        active
-          ? "bg-accent/10 border-r-2 border-accent"
-          : "hover:bg-white/5",
-      )}
-      aria-current={active ? "page" : undefined}
-    >
-      <UserAvatar name={peer.username} online={peer.is_online} />
-      <div className="min-w-0 flex-1">
-        <div className="flex items-center justify-between">
-          <span className="truncate text-sm font-medium text-slate-100">
-            {peer.username}
-          </span>
-          {time && (
-            <span className="ml-2 shrink-0 text-[11px] text-slate-500">
-              {time}
+    <div className="group relative">
+      <button
+        type="button"
+        onClick={onClick}
+        className={cn(
+          "flex w-full items-center gap-3 px-3 py-3 text-left transition",
+          active
+            ? "bg-accent/10 border-r-2 border-accent"
+            : "hover:bg-white/5",
+          conversation.is_pinned && "bg-white/[0.03]",
+        )}
+        aria-current={active ? "page" : undefined}
+      >
+        <UserAvatar name={peer.username} online={peer.is_online} />
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center justify-between">
+            <span className="flex items-center gap-1.5 truncate text-sm font-medium text-slate-100">
+              {conversation.is_pinned && (
+                <Pin className="h-3 w-3 shrink-0 text-accent" />
+              )}
+              {peer.username}
             </span>
-          )}
+            {time && (
+              <span className="ml-2 shrink-0 text-[11px] text-slate-500">
+                {time}
+              </span>
+            )}
+          </div>
+          <div className="flex items-center justify-between">
+            <p className="truncate text-xs text-slate-400">
+              {conversation.is_muted && (
+                <BellOff className="inline h-3 w-3 mr-1 text-slate-500" />
+              )}
+              {conversation.last_message_preview || "No messages yet"}
+            </p>
+            {conversation.unread_count > 0 && (
+              <span className="ml-2 grid h-5 min-w-[20px] shrink-0 place-items-center rounded-full bg-accent px-1.5 text-[10px] font-bold text-white">
+                {conversation.unread_count > 99
+                  ? "99+"
+                  : conversation.unread_count}
+              </span>
+            )}
+          </div>
         </div>
-        <div className="flex items-center justify-between">
-          <p className="truncate text-xs text-slate-400">
-            {conversation.last_message_preview || "No messages yet"}
-          </p>
-          {conversation.unread_count > 0 && (
-            <span className="ml-2 grid h-5 min-w-[20px] shrink-0 place-items-center rounded-full bg-accent px-1.5 text-[10px] font-bold text-white">
-              {conversation.unread_count > 99
-                ? "99+"
-                : conversation.unread_count}
-            </span>
-          )}
-        </div>
+      </button>
+
+      {/* Quick actions on hover */}
+      <div className="absolute right-2 top-1/2 -translate-y-1/2 hidden group-hover:flex items-center gap-1 bg-ink-900/90 rounded-lg px-1 py-0.5 shadow-lg z-10">
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            onTogglePin();
+          }}
+          className="grid h-6 w-6 place-items-center rounded text-slate-400 transition hover:bg-white/10 hover:text-white"
+          aria-label={conversation.is_pinned ? "Unpin" : "Pin"}
+        >
+          {conversation.is_pinned ? <PinOff className="h-3 w-3" /> : <Pin className="h-3 w-3" />}
+        </button>
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggleMute();
+          }}
+          className="grid h-6 w-6 place-items-center rounded text-slate-400 transition hover:bg-white/10 hover:text-white"
+          aria-label={conversation.is_muted ? "Unmute" : "Mute"}
+        >
+          {conversation.is_muted ? <Bell className="h-3 w-3" /> : <BellOff className="h-3 w-3" />}
+        </button>
       </div>
-    </button>
+    </div>
   );
 }

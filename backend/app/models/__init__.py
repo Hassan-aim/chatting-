@@ -117,6 +117,8 @@ class ConversationMember(Base):
     user_id: Mapped[str] = mapped_column(
         String(36), ForeignKey("users.id", ondelete="CASCADE"), nullable=False
     )
+    is_pinned: Mapped[bool] = mapped_column(Boolean, default=False, server_default=text("false"))
+    is_muted: Mapped[bool] = mapped_column(Boolean, default=False, server_default=text("false"))
     joined_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), nullable=False
     )
