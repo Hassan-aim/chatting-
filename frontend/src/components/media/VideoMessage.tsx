@@ -25,9 +25,9 @@ export function VideoMessage({ attachment }: { attachment: Attachment }) {
   }
 
   return (
-    <div className="relative max-w-xs overflow-hidden rounded-lg">
+    <div className="relative max-w-xs overflow-hidden rounded-xl">
       {!loaded && (
-        <div className="h-40 w-60 animate-pulse rounded-lg bg-white/10" />
+        <div className="h-40 w-60 animate-pulse rounded-xl bg-white/[0.06]" />
       )}
       <video
         ref={videoRef}
@@ -37,7 +37,7 @@ export function VideoMessage({ attachment }: { attachment: Attachment }) {
         onLoadedData={() => setLoaded(true)}
         onPlay={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
-        className={`max-h-72 w-full rounded-lg ${loaded ? "" : "h-0 overflow-hidden"}`}
+        className={`max-h-72 w-full rounded-xl ${loaded ? "" : "h-0 overflow-hidden"}`}
         aria-label={attachment.file_name}
       />
       {loaded && !playing && (
@@ -47,7 +47,7 @@ export function VideoMessage({ attachment }: { attachment: Attachment }) {
           className="absolute inset-0 grid place-items-center bg-black/30 transition hover:bg-black/40"
           aria-label="Play video"
         >
-          <span className="grid h-12 w-12 place-items-center rounded-full bg-white/90 text-ink-900 shadow-lg">
+          <span className="grid h-12 w-12 place-items-center rounded-full bg-white/90 text-surface shadow-lg">
             <Play className="ml-0.5 h-6 w-6" fill="currentColor" />
           </span>
         </button>

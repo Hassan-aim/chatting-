@@ -45,7 +45,7 @@ export function ConfirmDialog({
       ref={dialogRef}
       onCancel={onClose}
       onKeyDown={handleKeyDown}
-      className="fixed inset-0 z-50 m-auto max-w-sm rounded-2xl border border-white/10 bg-ink-900 p-0 text-slate-100 shadow-2xl backdrop:bg-black/60"
+      className="fixed inset-0 z-50 m-auto max-w-sm rounded-2xl border border-white/[0.06] bg-surface-raised p-0 text-slate-100 shadow-2xl backdrop:bg-black/60"
     >
       <div className="p-6">
         <h2 className="text-lg font-semibold">{title}</h2>
@@ -57,7 +57,7 @@ export function ConfirmDialog({
           <button
             type="button"
             onClick={onClose}
-            className="rounded-xl bg-white/5 px-4 py-2 text-sm font-medium text-slate-100 transition hover:bg-white/10"
+            className="rounded-xl bg-white/5 px-4 py-2 text-sm font-medium text-slate-200 transition hover:bg-white/10 border border-white/[0.06]"
           >
             Cancel
           </button>
@@ -68,9 +68,9 @@ export function ConfirmDialog({
               onClose();
             }}
             className={cn(
-              "rounded-xl px-4 py-2 text-sm font-medium text-white transition",
+              "rounded-xl px-4 py-2 text-sm font-medium text-white transition active:scale-[0.97]",
               variant === "danger"
-                ? "bg-rose-600 hover:bg-rose-500"
+                ? "bg-danger hover:bg-danger-muted"
                 : "bg-accent hover:bg-accent-muted",
             )}
           >

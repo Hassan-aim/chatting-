@@ -10,13 +10,13 @@ export function ChatPage() {
   return (
     <div className="flex h-full flex-col">
       {offline && (
-        <div className="bg-amber-500/20 px-4 py-2 text-center text-sm text-amber-200" role="status">
+        <div className="bg-amber-500/10 border-b border-amber-500/20 px-4 py-2 text-center text-sm text-amber-300" role="status">
           You're offline
         </div>
       )}
       <div className="flex min-h-0 flex-1">
         <aside
-          className={`w-full shrink-0 border-r border-white/10 bg-ink-900 md:w-80 ${conversationId ? "hidden md:flex md:flex-col" : "flex flex-col"}`}
+          className={`w-full shrink-0 border-r border-white/[0.06] bg-surface-raised md:w-80 ${conversationId ? "hidden md:flex md:flex-col" : "flex flex-col"}`}
         >
           <ConversationList activeId={conversationId} />
         </aside>
@@ -24,8 +24,11 @@ export function ChatPage() {
           {conversationId ? (
             <ChatWindow conversationId={conversationId} />
           ) : (
-            <div className="grid flex-1 place-items-center text-slate-500">
-              Select a conversation to start chatting
+            <div className="grid flex-1 place-items-center text-slate-600">
+              <div className="text-center">
+                <p className="text-lg font-medium">Select a conversation</p>
+                <p className="mt-1 text-sm">to start chatting</p>
+              </div>
             </div>
           )}
         </section>

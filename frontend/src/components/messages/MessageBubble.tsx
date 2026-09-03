@@ -63,9 +63,9 @@ export const MessageBubble = memo(function MessageBubble({
   return (
     <motion.div
       layout="position"
-      initial={{ opacity: 0, y: 10, scale: 0.98 }}
+      initial={{ opacity: 0, y: 8, scale: 0.98 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ type: "spring", stiffness: 400, damping: 30 }}
+      transition={{ type: "spring", stiffness: 500, damping: 35 }}
       className={cn(
         "group relative flex w-full",
         isMine ? "justify-end" : "justify-start",
@@ -79,13 +79,12 @@ export const MessageBubble = memo(function MessageBubble({
         className={cn(
           "relative max-w-[75%] rounded-2xl px-3.5 py-2 text-sm transition-colors md:max-w-[60%]",
           isMine
-            ? "rounded-br-md bg-accent/20 text-slate-100"
-            : "rounded-bl-md bg-white/[0.07] text-slate-100",
-          isPending && "opacity-60",
-          isFailed && "ring-1 ring-rose-500/50",
+            ? "rounded-br-md bg-emerald-600/20 text-slate-100 border border-emerald-500/10"
+            : "rounded-bl-md bg-white/[0.06] text-slate-100 border border-white/[0.04]",
+          isPending && "opacity-50",
+          isFailed && "ring-1 ring-red-500/50",
         )}
       >
-        {/* Reply preview */}
         {message.reply_to && !isDeleted && (
           <InlineReplyPreview
             reply={message.reply_to}
@@ -96,21 +95,17 @@ export const MessageBubble = memo(function MessageBubble({
           />
         )}
 
-        {/* Content */}
         {isDeleted ? (
           <p className="select-none italic text-slate-500">
             This message was deleted
           </p>
         ) : (
           <>
-            {/* Text content */}
             {message.content && (
               <p className="whitespace-pre-wrap break-words leading-relaxed">
                 {message.content}
               </p>
             )}
-
-            {/* Attachments */}
             {message.attachments.map((att) => {
               if (message.message_type === "image") {
                 return <ImageMessage key={att.id} attachment={att} />;
@@ -123,7 +118,6 @@ export const MessageBubble = memo(function MessageBubble({
           </>
         )}
 
-        {/* Footer: timestamp + status */}
         <div
           className={cn(
             "mt-1 flex items-center gap-1.5 text-[11px]",
@@ -147,11 +141,10 @@ export const MessageBubble = memo(function MessageBubble({
             </>
           )}
           {isFailed && (
-            <span className="font-medium text-rose-400">Failed</span>
+            <span className="font-medium text-red-400">Failed</span>
           )}
         </div>
 
-        {/* Actions menu */}
         <MessageActions
           isMine={isMine}
           isText={isText}

@@ -40,12 +40,10 @@ export function ChatWindow({ conversationId }: ChatWindowProps) {
 
   const messages = flattenMessages(messagesData?.pages);
 
-  // Mark messages as read when viewing
   const handleSendRead = useCallback(() => {
     send("message:read", {});
   }, [send]);
 
-  // Delete confirmation state
   const [deleteTarget, setDeleteTarget] = useState<ChatMessage | null>(null);
 
   const handleReply = useCallback(
@@ -70,12 +68,10 @@ export function ChatWindow({ conversationId }: ChatWindowProps) {
     if (!deleteTarget) return;
     const msgId = deleteTarget.id;
 
-    // Try WebSocket first
     const sent = send("message:delete", { id: msgId });
     if (!sent) {
       try {
         await deleteMessageApi(msgId);
-        // Update local cache
         const key = ["messages", conversationId];
         queryClient.setQueryData<{ pages: { items: ChatMessage[] }[] }>(key, (old) => {
           if (!old) return old;
@@ -102,15 +98,14 @@ export function ChatWindow({ conversationId }: ChatWindowProps) {
     if (hasNextPage) void fetchNextPage();
   }, [hasNextPage, fetchNextPage]);
 
-  // Send read receipt when conversation comes into view
   if (messages.length > 0) {
     handleSendRead();
   }
 
   if (convLoading) {
     return (
-      <div className="flex flex-1 flex-col bg-ink-950">
-        <div className="flex items-center gap-3 border-b border-white/10 bg-ink-900 px-4 py-3">
+      <div className="flex flex-1 flex-col bg-surface">
+        <div className="flex items-center gap-3 border-b border-white/[0.06] bg-surface-raised px-4 py-3">
           <Skeleton className="h-10 w-10 rounded-full" />
           <div className="space-y-1">
             <Skeleton className="h-4 w-32" />
@@ -131,7 +126,7 @@ export function ChatWindow({ conversationId }: ChatWindowProps) {
   }
 
   return (
-    <div className="flex flex-1 flex-col bg-ink-950">
+    <div className="flex flex-1 flex-col bg-surface">
       <ChatHeader conversation={conversation} />
 
       <MessageList

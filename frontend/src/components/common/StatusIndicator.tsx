@@ -1,13 +1,10 @@
 import type { DeliveryState } from "../../types";
 import { cn } from "../../utils/cn";
 
-const CHECK =
-  "M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z";
-
 function SingleCheck({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" className={cn("h-4 w-4", className)} fill="currentColor">
-      <path d={CHECK} />
+      <path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
     </svg>
   );
 }
@@ -28,7 +25,7 @@ export function StatusIndicator({
   className?: string;
 }) {
   if (status === "read") {
-    return <DoubleCheck className={cn("text-sky-400", className)} />;
+    return <DoubleCheck className={cn("text-emerald-400", className)} />;
   }
   if (status === "delivered") {
     return <DoubleCheck className={cn("text-slate-400", className)} />;

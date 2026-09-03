@@ -19,18 +19,18 @@ export function ImageMessage({ attachment }: { attachment: Attachment }) {
       <button
         type="button"
         onClick={openLightbox}
-        className="group relative block max-w-xs overflow-hidden rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+        className="group relative block max-w-xs overflow-hidden rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
         aria-label={`View ${attachment.file_name}`}
       >
         {!loaded && (
-          <div className="h-40 w-60 animate-pulse rounded-lg bg-white/10" />
+          <div className="h-40 w-60 animate-pulse rounded-xl bg-white/[0.06]" />
         )}
         <img
           src={src}
           alt={attachment.file_name}
           loading="lazy"
           onLoad={() => setLoaded(true)}
-          className={`max-h-72 rounded-lg object-cover transition group-hover:brightness-90 ${loaded ? "" : "h-0 overflow-hidden"}`}
+          className={`max-h-72 rounded-xl object-cover transition group-hover:brightness-90 ${loaded ? "" : "h-0 overflow-hidden"}`}
         />
       </button>
       <ImageLightbox

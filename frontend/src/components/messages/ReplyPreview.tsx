@@ -15,7 +15,6 @@ interface ReplyPreviewBarProps {
   className?: string;
 }
 
-/** Shown above MessageInput when composing a reply */
 export function ReplyPreviewBar({
   reply,
   senderName,
@@ -27,7 +26,7 @@ export function ReplyPreviewBar({
   return (
     <div
       className={cn(
-        "flex items-center gap-2 border-l-2 border-accent bg-white/5 px-3 py-2",
+        "flex items-center gap-2 border-l-2 border-accent bg-accent/[0.06] px-3 py-2",
         className,
       )}
     >
@@ -41,8 +40,8 @@ export function ReplyPreviewBar({
             Message deleted
           </p>
         ) : (
-          <p className="flex items-center gap-1 truncate text-xs text-slate-300">
-            {Icon && <Icon className="h-3 w-3 shrink-0 text-slate-400" />}
+          <p className="flex items-center gap-1 truncate text-xs text-slate-400">
+            {Icon && <Icon className="h-3 w-3 shrink-0 text-slate-500" />}
             {reply.content
               ? reply.content.slice(0, 80)
               : reply.message_type !== "text"
@@ -55,7 +54,7 @@ export function ReplyPreviewBar({
         <button
           type="button"
           onClick={onClose}
-          className="grid h-6 w-6 shrink-0 place-items-center rounded text-slate-400 transition hover:bg-white/10 hover:text-white"
+          className="grid h-6 w-6 shrink-0 place-items-center rounded text-slate-500 transition hover:bg-white/[0.06] hover:text-slate-200"
           aria-label="Cancel reply"
         >
           <X className="h-3.5 w-3.5" />
@@ -71,7 +70,6 @@ interface InlineReplyPreviewProps {
   onClick?: () => void;
 }
 
-/** Shown inline inside a MessageBubble for replied messages */
 export function InlineReplyPreview({
   reply,
   senderName,
@@ -83,7 +81,7 @@ export function InlineReplyPreview({
     <button
       type="button"
       onClick={onClick}
-      className="mb-1 block w-full rounded-lg border-l-2 border-accent/50 bg-white/5 px-2.5 py-1.5 text-left transition hover:bg-white/10"
+      className="mb-1 block w-full rounded-lg border-l-2 border-accent/40 bg-white/[0.04] px-2.5 py-1.5 text-left transition hover:bg-white/[0.07]"
     >
       {senderName && (
         <p className="text-[11px] font-medium text-accent">{senderName}</p>
@@ -93,7 +91,7 @@ export function InlineReplyPreview({
           Message deleted
         </p>
       ) : (
-        <p className="flex items-center gap-1 truncate text-xs text-slate-400">
+        <p className="flex items-center gap-1 truncate text-xs text-slate-500">
           {Icon && <Icon className="h-3 w-3 shrink-0" />}
           {reply.content
             ? reply.content.slice(0, 60)

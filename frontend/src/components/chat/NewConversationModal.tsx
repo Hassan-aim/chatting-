@@ -31,9 +31,7 @@ export function NewConversationModal({ open, onClose }: NewConversationModalProp
   }, [open]);
 
   useEffect(() => {
-    if (!open) {
-      setQuery("");
-    }
+    if (!open) setQuery("");
   }, [open]);
 
   const handleSelect = useCallback(
@@ -55,7 +53,7 @@ export function NewConversationModal({ open, onClose }: NewConversationModalProp
     <dialog
       ref={dialogRef}
       onCancel={onClose}
-      className="fixed inset-0 z-50 m-auto w-full max-w-md rounded-2xl border border-white/10 bg-ink-900 p-0 text-slate-100 shadow-2xl backdrop:bg-black/60"
+      className="fixed inset-0 z-50 m-auto w-full max-w-md rounded-2xl border border-white/[0.06] bg-surface-raised p-0 text-slate-100 shadow-2xl backdrop:bg-black/60"
     >
       <div className="p-5">
         <div className="mb-4 flex items-center justify-between">
@@ -66,14 +64,13 @@ export function NewConversationModal({ open, onClose }: NewConversationModalProp
           <button
             type="button"
             onClick={onClose}
-            className="grid h-8 w-8 place-items-center rounded-lg text-slate-400 transition hover:bg-white/10 hover:text-white"
+            className="grid h-8 w-8 place-items-center rounded-lg text-slate-400 transition hover:bg-white/[0.06] hover:text-white"
             aria-label="Close"
           >
             <X className="h-4 w-4" />
           </button>
         </div>
 
-        {/* Search input */}
         <div className="relative">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
           <input
@@ -81,13 +78,12 @@ export function NewConversationModal({ open, onClose }: NewConversationModalProp
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search by username…"
-            className="w-full rounded-xl border border-white/10 bg-ink-800 py-2.5 pl-10 pr-3 text-sm text-slate-100 placeholder:text-slate-500 focus:border-accent focus:outline-none"
+            placeholder="Search by username..."
+            className="w-full rounded-xl border border-white/[0.06] bg-surface-elevated py-2.5 pl-10 pr-3 text-sm text-slate-100 placeholder:text-slate-500 focus:border-accent focus:outline-none"
             aria-label="Search users"
           />
         </div>
 
-        {/* Results */}
         <div className="scrollbar-thin mt-3 max-h-64 overflow-y-auto">
           {isLoading && query.length > 0 && (
             <div className="flex justify-center py-8">
@@ -107,7 +103,7 @@ export function NewConversationModal({ open, onClose }: NewConversationModalProp
               type="button"
               onClick={() => handleSelect(user.username)}
               disabled={createConversation.isPending}
-              className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition hover:bg-white/5 disabled:opacity-50"
+              className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition hover:bg-white/[0.04] disabled:opacity-50"
             >
               <UserAvatar name={user.username} online={user.is_online} size="sm" />
               <div className="min-w-0 flex-1">

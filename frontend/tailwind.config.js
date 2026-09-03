@@ -1,22 +1,36 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./index.html", "./src/**/*.{ts,tsx}"],
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
-        ink: {
-          950: "#09090b", // zinc-950
-          900: "#18181b", // zinc-900
-          800: "#27272a", // zinc-800
-          700: "#3f3f46", // zinc-700
+        surface: {
+          DEFAULT: "#0c1117",
+          raised: "#141b24",
+          elevated: "#1c2530",
+          hover: "#222d3a",
+        },
+        border: {
+          DEFAULT: "rgba(255,255,255,0.06)",
+          hover: "rgba(255,255,255,0.12)",
         },
         accent: {
-          DEFAULT: "#0284c7", // sky-600 (Electric blue)
-          muted: "#0369a1", // sky-700
+          DEFAULT: "#10b981", // emerald-500
+          muted: "#059669", // emerald-600
+          subtle: "rgba(16,185,129,0.12)",
+        },
+        danger: {
+          DEFAULT: "#ef4444",
+          muted: "#dc2626",
         },
       },
       fontFamily: {
         sans: ["Geist", "system-ui", "sans-serif"],
+      },
+      borderRadius: {
+        xl: "12px",
+        "2xl": "16px",
       },
     },
   },

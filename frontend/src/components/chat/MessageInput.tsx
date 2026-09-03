@@ -46,7 +46,6 @@ export function MessageInput({
   const setEditing = useChatUi((s) => s.setEditing);
   const currentUser = useAuthStore((s) => s.user);
 
-  // Pre-fill text when editing
   useEffect(() => {
     if (editing && editing.content) {
       setText(editing.content);
@@ -54,7 +53,6 @@ export function MessageInput({
     }
   }, [editing]);
 
-  // Auto-resize textarea
   useEffect(() => {
     const el = textareaRef.current;
     if (!el) return;
@@ -62,7 +60,6 @@ export function MessageInput({
     el.style.height = `${Math.min(el.scrollHeight, 160)}px`;
   }, [text]);
 
-  // Debounced typing indicator
   const sendTypingStart = useCallback(() => {
     if (!isTypingRef.current) {
       isTypingRef.current = true;
@@ -152,7 +149,6 @@ export function MessageInput({
       const trimmed = text.trim();
       if (!trimmed && !editing) return;
 
-      // Handle edit mode
       if (editing) {
         if (!trimmed) return;
         const sent = send("message:update", { id: editing.id, content: trimmed });
@@ -168,7 +164,6 @@ export function MessageInput({
         return;
       }
 
-      // Send new message
       const clientId = createClientId();
       const payload: Record<string, unknown> = {
         content: trimmed,
@@ -179,7 +174,6 @@ export function MessageInput({
         payload.reply_to_message_id = replyTo.id;
       }
 
-      // Optimistic UI
       addOptimisticMessage({
         content: trimmed,
         client_id: clientId,
@@ -198,14 +192,12 @@ export function MessageInput({
       setText("");
       setReplyTo(null);
 
-      // Stop typing
       if (isTypingRef.current) {
         isTypingRef.current = false;
         window.clearTimeout(typingTimeoutRef.current);
         send("typing:stop", {});
       }
 
-      // Try WebSocket first, fall back to REST
       const sent = send("message:new", payload);
       if (!sent) {
         try {
@@ -252,7 +244,6 @@ export function MessageInput({
     async (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
       if (!file) return;
-      // Reset input
       e.target.value = "";
 
       setUploading(true);
@@ -264,7 +255,6 @@ export function MessageInput({
           setUploadProgress(pct),
         );
 
-        // Determine message type from MIME
         let messageType = "file";
         if (attachment.mime_type.startsWith("image/")) messageType = "image";
         else if (attachment.mime_type.startsWith("video/")) messageType = "video";
@@ -317,7 +307,6 @@ export function MessageInput({
         const after = text.slice(end);
         const newText = before + emoji + after;
         setText(newText);
-        // Restore cursor position
         requestAnimationFrame(() => {
           el.selectionStart = el.selectionEnd = start + emoji.length;
           el.focus();
@@ -335,8 +324,7 @@ export function MessageInput({
   }, [setEditing]);
 
   return (
-    <div className="border-t border-white/5 bg-ink-900/60 backdrop-blur-md shadow-[0_-1px_0_rgba(255,255,255,0.05)]">
-      {/* Reply preview bar */}
+    <div className="border-t border-white/[0.06] bg-surface/80 backdrop-blur-md">
       {replyTo && (
         <ReplyPreviewBar
           reply={{
@@ -355,14 +343,13 @@ export function MessageInput({
         />
       )}
 
-      {/* Edit mode indicator */}
       {editing && (
-        <div className="flex items-center gap-2 border-l-2 border-amber-400 bg-amber-400/5 px-3 py-2 text-sm">
+        <div className="flex items-center gap-2 border-l-2 border-amber-400 bg-amber-400/[0.06] px-3 py-2 text-sm">
           <span className="text-amber-400">Editing message</span>
           <button
             type="button"
             onClick={cancelEdit}
-            className="ml-auto grid h-6 w-6 place-items-center rounded text-slate-400 transition hover:bg-white/10 hover:text-white"
+            className="ml-auto grid h-6 w-6 place-items-center rounded text-slate-400 transition hover:bg-white/[0.06] hover:text-white"
             aria-label="Cancel edit"
           >
             <X className="h-3.5 w-3.5" />
@@ -370,7 +357,6 @@ export function MessageInput({
         </div>
       )}
 
-      {/* Upload progress */}
       {uploading && (
         <div className="px-3 py-2">
           <UploadProgress
@@ -380,17 +366,15 @@ export function MessageInput({
         </div>
       )}
 
-      {/* Input area */}
       <form onSubmit={handleSubmit} className="flex items-end gap-2 p-3">
-        {/* Attach button */}
         <button
           type="button"
           onClick={() => fileRef.current?.click()}
           disabled={uploading}
-          className="grid h-9 w-9 shrink-0 place-items-center rounded-xl text-slate-400 transition-all hover:bg-white/10 hover:text-white active:-translate-y-[1px] disabled:opacity-50"
+          className="grid h-9 w-9 shrink-0 place-items-center rounded-xl text-slate-400 transition-all hover:bg-white/[0.06] hover:text-slate-200 active:scale-[0.95] disabled:opacity-40"
           aria-label="Attach file"
         >
-          <Paperclip className="h-5 w-5 stroke-[1.5]" />
+          <Paperclip className="h-5 w-5" strokeWidth={1.5} />
         </button>
         <input
           ref={fileRef}
@@ -400,26 +384,23 @@ export function MessageInput({
           onChange={handleFileSelect}
         />
 
-        {/* Text input */}
         <textarea
           ref={textareaRef}
           value={text}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
-          placeholder="Type a message…"
+          placeholder="Type a message..."
           rows={1}
-          className="max-h-40 min-h-[36px] flex-1 resize-none rounded-2xl border border-white/5 bg-ink-800/80 px-4 py-2 text-[14px] text-slate-100 placeholder:text-zinc-500 shadow-[inset_0_1px_2px_rgba(0,0,0,0.2)] focus:border-accent focus:bg-ink-800 focus:outline-none focus:ring-1 focus:ring-accent/50"
+          className="max-h-40 min-h-[36px] flex-1 resize-none rounded-xl border border-white/[0.06] bg-surface-raised px-4 py-2.5 text-[14px] text-slate-100 placeholder:text-slate-500 shadow-[inset_0_1px_2px_rgba(0,0,0,0.15)] focus:border-accent focus:bg-surface-elevated focus:outline-none focus:ring-1 focus:ring-accent/30"
           aria-label="Message input"
         />
 
-        {/* Emoji picker */}
         <EmojiPicker onSelect={handleEmojiSelect} />
 
-        {/* Send button */}
         <button
           type="submit"
           disabled={!text.trim() && !editing}
-          className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-accent text-white transition-all hover:bg-accent-muted active:-translate-y-[1px] disabled:opacity-40"
+          className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-accent text-white transition-all hover:bg-accent-muted active:scale-[0.95] disabled:opacity-30 shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
           aria-label={editing ? "Save edit" : "Send message"}
         >
           <Send className="h-4 w-4" />

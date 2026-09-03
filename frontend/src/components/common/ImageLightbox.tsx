@@ -31,12 +31,12 @@ export function ImageLightbox({ src, alt, open, onClose }: ImageLightboxProps) {
       ref={dialogRef}
       onCancel={onClose}
       onClick={handleClick}
-      className="fixed inset-0 z-50 m-auto max-h-[90vh] max-w-[90vw] bg-transparent p-0 backdrop:bg-black/80"
+      className="fixed inset-0 z-50 m-auto max-h-[90vh] max-w-[90vw] bg-transparent p-0 backdrop:bg-black/85"
     >
       <div className="relative">
         <button
           onClick={onClose}
-          className="absolute -top-10 right-0 rounded-full bg-white/10 p-2 text-white transition hover:bg-white/20"
+          className="absolute -top-12 right-0 rounded-full bg-white/10 p-2 text-white transition hover:bg-white/20"
           aria-label="Close"
         >
           <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2}>
@@ -46,7 +46,7 @@ export function ImageLightbox({ src, alt, open, onClose }: ImageLightboxProps) {
         <img
           src={src}
           alt={alt || "Full size image"}
-          className="max-h-[85vh] max-w-[90vw] rounded-lg object-contain"
+          className="max-h-[85vh] max-w-[90vw] rounded-xl object-contain"
         />
       </div>
     </dialog>

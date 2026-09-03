@@ -33,7 +33,7 @@ export function ChatHeader({ conversation }: ChatHeaderProps) {
 
   let statusText = "Offline";
   if (peerTyping) {
-    statusText = "typing…";
+    statusText = "typing...";
   } else if (isOnline) {
     statusText = "Online";
   } else if (peer.last_seen) {
@@ -41,12 +41,11 @@ export function ChatHeader({ conversation }: ChatHeaderProps) {
   }
 
   return (
-    <header className="flex items-center gap-3 border-b border-white/5 bg-ink-900/60 px-4 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] backdrop-blur-md z-10 sticky top-0">
-      {/* Back button (mobile only) */}
+    <header className="flex items-center gap-3 border-b border-white/[0.06] bg-surface/80 px-4 py-3 backdrop-blur-md z-10 sticky top-0">
       <button
         type="button"
         onClick={() => navigate("/chat")}
-        className="grid h-8 w-8 place-items-center rounded-lg text-slate-400 transition-all hover:bg-white/10 hover:text-white active:-translate-y-[1px] md:hidden"
+        className="grid h-8 w-8 place-items-center rounded-lg text-slate-400 transition-all hover:bg-white/[0.06] hover:text-white active:scale-[0.95] md:hidden"
         aria-label="Back to conversations"
       >
         <ArrowLeft className="h-5 w-5" />
@@ -63,22 +62,21 @@ export function ChatHeader({ conversation }: ChatHeaderProps) {
             peerTyping
               ? "text-accent"
               : isOnline
-                ? "text-emerald-500"
-                : "text-zinc-500"
+                ? "text-emerald-400"
+                : "text-slate-500"
           }`}
         >
           {statusText}
         </p>
       </div>
 
-      {/* Logout button */}
       <button
         type="button"
         onClick={handleLogout}
-        className="grid h-8 w-8 place-items-center rounded-lg text-slate-400 transition-all hover:bg-white/10 hover:text-white active:-translate-y-[1px]"
+        className="grid h-8 w-8 place-items-center rounded-lg text-slate-400 transition-all hover:bg-white/[0.06] hover:text-white active:scale-[0.95]"
         aria-label="Sign out"
       >
-        <LogOut className="h-4 w-4 stroke-[1.5]" />
+        <LogOut className="h-4 w-4" strokeWidth={1.5} />
       </button>
     </header>
   );

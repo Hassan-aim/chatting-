@@ -44,7 +44,7 @@ export function SearchPage() {
     const regex = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, "gi");
     return text.split(regex).map((part, i) =>
       regex.test(part) ? (
-        <mark key={i} className="bg-accent/30 text-accent rounded px-0.5">
+        <mark key={i} className="bg-accent/20 text-accent rounded px-0.5">
           {part}
         </mark>
       ) : (
@@ -54,13 +54,12 @@ export function SearchPage() {
   };
 
   return (
-    <div className="min-h-[100dvh] bg-ink-950">
-      {/* Header */}
-      <header className="sticky top-0 z-40 flex items-center gap-3 border-b border-white/5 bg-ink-950/80 backdrop-blur-xl px-4 py-3">
+    <div className="min-h-[100dvh] bg-surface">
+      <header className="sticky top-0 z-40 flex items-center gap-3 border-b border-white/[0.06] bg-surface/80 backdrop-blur-xl px-4 py-3">
         <button
           type="button"
           onClick={() => navigate("/chat")}
-          className="grid h-8 w-8 place-items-center rounded-lg text-slate-400 transition-all hover:bg-white/10 hover:text-white active:-translate-y-[1px]"
+          className="grid h-8 w-8 place-items-center rounded-lg text-slate-400 transition-all hover:bg-white/[0.06] hover:text-white active:scale-[0.95]"
           aria-label="Back to chat"
         >
           <ArrowLeft className="h-5 w-5" />
@@ -69,9 +68,8 @@ export function SearchPage() {
       </header>
 
       <div className="mx-auto max-w-2xl px-4 py-6">
-        {/* Search input */}
         <motion.div
-          initial={reduce ? false : { opacity: 0, y: 12 }}
+          initial={reduce ? false : { opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
           className="relative mb-6"
@@ -83,14 +81,13 @@ export function SearchPage() {
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search across all conversations..."
             autoFocus
-            className="w-full rounded-xl border border-white/10 bg-ink-900 py-3 pl-10 pr-4 text-sm text-slate-100 placeholder:text-slate-500 focus:border-accent focus:outline-none"
+            className="w-full rounded-xl border border-white/[0.06] bg-surface-raised py-3 pl-10 pr-4 text-sm text-slate-100 placeholder:text-slate-500 focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30"
           />
           {loading && (
             <Loader2 className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin text-slate-400" />
           )}
         </motion.div>
 
-        {/* Results */}
         {searched && !loading && results.length === 0 && (
           <div className="py-12 text-center">
             <MessageSquare className="mx-auto mb-3 h-10 w-10 text-slate-600" />
@@ -107,7 +104,7 @@ export function SearchPage() {
               <Link
                 key={msg.id}
                 to={`/c/${msg.conversation_id}`}
-                className="block rounded-xl border border-white/5 bg-ink-900 p-4 transition hover:border-white/10 hover:bg-ink-800"
+                className="block rounded-xl border border-white/[0.06] bg-surface-raised p-4 transition hover:border-white/[0.12] hover:bg-surface-elevated"
               >
                 <div className="flex items-center justify-between mb-1">
                   <span className="text-xs font-medium text-accent">

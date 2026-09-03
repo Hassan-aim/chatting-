@@ -11,7 +11,6 @@ import {
   Check,
   Share2,
   Smartphone,
-  Globe,
 } from "lucide-react";
 import { Button } from "../components/common/Button";
 
@@ -31,16 +30,16 @@ function Nav() {
     <nav
       className={`fixed top-0 z-50 flex h-[72px] w-full items-center border-b transition-colors duration-300 ${
         scrolled
-          ? "border-white/5 bg-ink-950/80 backdrop-blur-xl"
+          ? "border-white/[0.06] bg-surface/80 backdrop-blur-xl"
           : "border-transparent bg-transparent"
       }`}
     >
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-6">
-        <Link to="/" className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent">
-            <MessageCircle className="h-4 w-4 text-white" strokeWidth={2} />
+        <Link to="/" className="flex items-center gap-2.5">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent/20">
+            <MessageCircle className="h-4 w-4 text-accent" strokeWidth={2} />
           </div>
-          <span className="text-lg font-semibold tracking-tight">Nexus</span>
+          <span className="text-lg font-semibold tracking-tight text-slate-100">Nexus</span>
         </Link>
 
         <div className="hidden items-center gap-8 md:flex">
@@ -53,8 +52,8 @@ function Nav() {
           <a href="#how-it-works" className="text-sm text-slate-400 transition hover:text-white">
             How it works
           </a>
-          <a href="#whatsapp" className="text-sm text-slate-400 transition hover:text-white">
-            WhatsApp
+          <a href="#share" className="text-sm text-slate-400 transition hover:text-white">
+            Share
           </a>
         </div>
 
@@ -84,35 +83,25 @@ function Hero() {
 
   return (
     <section className="relative flex min-h-[100dvh] items-center overflow-hidden pt-20">
-      {/* Subtle radial glow */}
+      {/* Subtle emerald glow */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute left-1/2 top-1/3 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent/5 blur-[120px]" />
+        <div className="absolute left-[30%] top-[20%] h-[500px] w-[500px] rounded-full bg-emerald-500/[0.04] blur-[100px]" />
+        <div className="absolute right-[20%] top-[40%] h-[400px] w-[400px] rounded-full bg-teal-500/[0.03] blur-[80px]" />
       </div>
 
-      {/* Background grid */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.02]"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
-          backgroundSize: "64px 64px",
-        }}
-      />
-
       <div className="mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-12 px-6 lg:grid-cols-2 lg:gap-16">
-        {/* Left: content */}
         <div className="relative z-10">
           <motion.div
             initial={reduce ? false : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-400">
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/[0.08] bg-white/[0.03] px-3 py-1 text-xs text-emerald-400">
               <Lock className="h-3 w-3" />
               End-to-end encrypted
             </div>
 
-            <h1 className="text-4xl font-bold leading-[1.1] tracking-tight md:text-5xl lg:text-6xl">
+            <h1 className="text-4xl font-bold leading-[1.1] tracking-tight text-slate-50 md:text-5xl lg:text-6xl">
               Private conversations,{" "}
               <span className="text-accent">nothing hidden</span>
             </h1>
@@ -139,30 +128,28 @@ function Hero() {
           </motion.div>
         </div>
 
-        {/* Right: visual - chat mockup */}
         <motion.div
           initial={reduce ? false : { opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
           className="relative hidden lg:block"
         >
-          <div className="relative rounded-2xl border border-white/10 bg-ink-900 p-1">
+          <div className="relative rounded-2xl border border-white/[0.06] bg-surface-raised p-1">
             <div className="overflow-hidden rounded-xl">
               <img
-                src="https://picsum.photos/seed/nexus-chat-mockup/800/520"
+                src="https://picsum.photos/seed/nexus-secure-chat/800/520"
                 alt="Nexus chat interface preview"
                 className="h-auto w-full object-cover"
                 loading="eager"
               />
             </div>
-            {/* Floating status badges */}
-            <div className="absolute -bottom-4 -left-4 flex items-center gap-2 rounded-xl border border-white/10 bg-ink-900 px-4 py-2.5 shadow-lg">
+            <div className="absolute -bottom-4 -left-4 flex items-center gap-2 rounded-xl border border-white/[0.06] bg-surface-raised px-4 py-2.5 shadow-lg">
               <div className="h-2 w-2 rounded-full bg-emerald-400" />
               <span className="text-xs font-medium text-slate-300">
                 2 users online
               </span>
             </div>
-            <div className="absolute -top-3 -right-3 flex items-center gap-1.5 rounded-xl border border-white/10 bg-ink-900 px-3 py-2 shadow-lg">
+            <div className="absolute -top-3 -right-3 flex items-center gap-1.5 rounded-xl border border-white/[0.06] bg-surface-raised px-3 py-2 shadow-lg">
               <Lock className="h-3 w-3 text-emerald-400" />
               <span className="text-[11px] font-medium text-slate-300">
                 Encrypted
@@ -176,7 +163,7 @@ function Hero() {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Features - Bento Grid                                              */
+/*  Features                                                           */
 /* ------------------------------------------------------------------ */
 function Features() {
   const reduce = useReducedMotion();
@@ -188,7 +175,7 @@ function Features() {
       description:
         "Every message is encrypted on your device. Not even our servers can read what you send.",
       span: "lg:col-span-2",
-      bg: "bg-ink-800",
+      bg: "bg-surface-elevated",
     },
     {
       icon: Zap,
@@ -196,7 +183,7 @@ function Features() {
       description:
         "WebSocket-powered real-time messaging. No polling, no delays.",
       span: "lg:col-span-1",
-      bg: "bg-ink-900",
+      bg: "bg-surface-raised",
     },
     {
       icon: Eye,
@@ -204,7 +191,7 @@ function Features() {
       description:
         "Know when your message was delivered and when it was read. No ambiguity.",
       span: "lg:col-span-1",
-      bg: "bg-ink-900",
+      bg: "bg-surface-raised",
     },
     {
       icon: MessageCircle,
@@ -212,7 +199,7 @@ function Features() {
       description:
         "Send images, videos, and files directly in chat. Preview everything before you download.",
       span: "lg:col-span-1",
-      bg: "bg-ink-800",
+      bg: "bg-surface-elevated",
     },
     {
       icon: Shield,
@@ -220,7 +207,7 @@ function Features() {
       description:
         "We don't store who you talk to, when, or how often. Your social graph stays yours.",
       span: "lg:col-span-2",
-      bg: "bg-ink-900",
+      bg: "bg-surface-raised",
     },
   ];
 
@@ -228,7 +215,7 @@ function Features() {
     <section id="features" className="py-24">
       <div className="mx-auto max-w-7xl px-6">
         <div className="mb-12 max-w-2xl">
-          <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
+          <h2 className="text-3xl font-bold tracking-tight text-slate-50 md:text-4xl">
             Built for two people
           </h2>
           <p className="mt-3 text-base text-slate-400">
@@ -249,10 +236,10 @@ function Features() {
                 delay: i * 0.05,
                 ease: [0.16, 1, 0.3, 1],
               }}
-              className={`rounded-2xl border border-white/5 p-6 transition-colors hover:border-white/10 ${feature.bg} ${feature.span}`}
+              className={`rounded-2xl border border-white/[0.06] p-6 transition-colors hover:border-white/[0.12] ${feature.bg} ${feature.span}`}
             >
               <feature.icon className="mb-4 h-5 w-5 text-accent" strokeWidth={1.5} />
-              <h3 className="mb-2 text-base font-semibold">{feature.title}</h3>
+              <h3 className="mb-2 text-base font-semibold text-slate-100">{feature.title}</h3>
               <p className="text-sm leading-relaxed text-slate-400">
                 {feature.description}
               </p>
@@ -292,10 +279,10 @@ function HowItWorks() {
   ];
 
   return (
-    <section id="how-it-works" className="border-t border-white/5 py-24">
+    <section id="how-it-works" className="border-t border-white/[0.06] py-24">
       <div className="mx-auto max-w-7xl px-6">
         <div className="mb-16 max-w-2xl">
-          <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
+          <h2 className="text-3xl font-bold tracking-tight text-slate-50 md:text-4xl">
             Three steps. That's it.
           </h2>
           <p className="mt-3 text-base text-slate-400">
@@ -318,10 +305,10 @@ function HowItWorks() {
               }}
               className="relative"
             >
-              <span className="mb-4 block text-5xl font-bold text-white/[0.06]">
+              <span className="mb-4 block text-5xl font-bold text-white/[0.04]">
                 {step.step}
               </span>
-              <h3 className="mb-2 text-lg font-semibold">{step.title}</h3>
+              <h3 className="mb-2 text-lg font-semibold text-slate-100">{step.title}</h3>
               <p className="text-sm leading-relaxed text-slate-400">
                 {step.description}
               </p>
@@ -334,29 +321,21 @@ function HowItWorks() {
 }
 
 /* ------------------------------------------------------------------ */
-/*  WhatsApp Integration                                               */
+/*  Share on WhatsApp                                                  */
 /* ------------------------------------------------------------------ */
-function WhatsAppIntegration() {
+function ShareSection() {
   const reduce = useReducedMotion();
 
   const handleShare = () => {
     const text = encodeURIComponent(
-      "Check out Nexus - a private, encrypted chat app. Real-time messaging with no metadata collection. Try it here:",
-    );
-    const url = encodeURIComponent(window.location.origin);
-    window.open(`https://wa.me/?text=${text}%20${url}`, "_blank");
-  };
-
-  const handleShareGroup = () => {
-    const text = encodeURIComponent(
-      "I'm using Nexus for private, encrypted chat. Join me! Real-time messaging, file sharing, and read receipts. No tracking, no metadata collection.",
+      "Check out Nexus - a private, encrypted chat app. Real-time messaging with no metadata collection:",
     );
     const url = encodeURIComponent(window.location.origin);
     window.open(`https://wa.me/?text=${text}%20${url}`, "_blank");
   };
 
   return (
-    <section id="whatsapp" className="py-24">
+    <section id="share" className="py-24">
       <div className="mx-auto max-w-7xl px-6">
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
           <motion.div
@@ -365,11 +344,11 @@ function WhatsAppIntegration() {
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-emerald-400">
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/[0.08] px-3 py-1 text-xs text-emerald-400">
               <Smartphone className="h-3 w-3" />
-              Share on WhatsApp
+              Share with friends
             </div>
-            <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
+            <h2 className="text-3xl font-bold tracking-tight text-slate-50 md:text-4xl">
               Invite friends via WhatsApp
             </h2>
             <p className="mt-3 max-w-lg text-base text-slate-400">
@@ -382,18 +361,10 @@ function WhatsAppIntegration() {
               <button
                 type="button"
                 onClick={handleShare}
-                className="inline-flex items-center gap-2 rounded-xl bg-[#25D366] px-5 py-3 text-sm font-medium text-white transition hover:bg-[#20BD5A] active:scale-[0.98]"
+                className="inline-flex items-center gap-2 rounded-xl bg-[#25D366] px-5 py-3 text-sm font-medium text-white transition hover:bg-[#20BD5A] active:scale-[0.97] shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
               >
                 <Share2 className="h-4 w-4" />
                 Share on WhatsApp
-              </button>
-              <button
-                type="button"
-                onClick={handleShareGroup}
-                className="inline-flex items-center gap-2 rounded-xl bg-white/5 border border-white/10 px-5 py-3 text-sm font-medium text-slate-300 transition hover:bg-white/10 hover:text-white active:scale-[0.98]"
-              >
-                <Globe className="h-4 w-4" />
-                Share in Group
               </button>
             </div>
           </motion.div>
@@ -405,13 +376,13 @@ function WhatsAppIntegration() {
             transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="relative"
           >
-            <div className="rounded-2xl border border-white/5 bg-ink-900 p-8">
+            <div className="rounded-2xl border border-white/[0.06] bg-surface-raised p-8">
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
                   <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#25D366]/20">
                     <MessageCircle className="h-5 w-5 text-[#25D366]" />
                   </div>
-                  <div className="rounded-2xl rounded-tl-md bg-white/[0.07] p-3">
+                  <div className="rounded-2xl rounded-tl-md bg-white/[0.06] p-3 border border-white/[0.04]">
                     <p className="text-sm text-slate-200">
                       Hey! I found this amazing private chat app. No tracking, fully encrypted. You should try it!
                     </p>
@@ -424,7 +395,7 @@ function WhatsAppIntegration() {
                   <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-accent/20">
                     <MessageCircle className="h-5 w-5 text-accent" />
                   </div>
-                  <div className="rounded-2xl rounded-tr-md bg-accent/20 p-3">
+                  <div className="rounded-2xl rounded-tr-md bg-emerald-600/20 p-3 border border-emerald-500/10">
                     <p className="text-sm text-slate-200">
                       Sounds great! I hate how other apps read my messages. Signing up now.
                     </p>
@@ -434,7 +405,7 @@ function WhatsAppIntegration() {
                   </div>
                 </div>
               </div>
-              <div className="mt-6 pt-4 border-t border-white/5">
+              <div className="mt-6 pt-4 border-t border-white/[0.06]">
                 <p className="text-xs text-slate-500 text-center">
                   Share Nexus with friends on WhatsApp
                 </p>
@@ -463,11 +434,11 @@ function Security() {
   ];
 
   return (
-    <section id="security" className="border-t border-white/5 py-24">
+    <section id="security" className="border-t border-white/[0.06] py-24">
       <div className="mx-auto max-w-7xl px-6">
         <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
+            <h2 className="text-3xl font-bold tracking-tight text-slate-50 md:text-4xl">
               Security is the product
             </h2>
             <p className="mt-3 max-w-lg text-base text-slate-400">
@@ -506,17 +477,23 @@ function Security() {
 function CTA() {
   const reduce = useReducedMotion();
 
+  const handleShare = () => {
+    const text = encodeURIComponent("Check out Nexus - a private, encrypted chat app:");
+    const url = encodeURIComponent(window.location.origin);
+    window.open(`https://wa.me/?text=${text}%20${url}`, "_blank");
+  };
+
   return (
-    <section className="border-t border-white/5 py-24">
+    <section className="border-t border-white/[0.06] py-24">
       <div className="mx-auto max-w-7xl px-6">
         <motion.div
           initial={reduce ? false : { opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="rounded-2xl border border-white/10 bg-ink-800 px-8 py-16 text-center md:px-16"
+          className="rounded-2xl border border-white/[0.06] bg-surface-elevated px-8 py-16 text-center md:px-16"
         >
-          <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
+          <h2 className="text-3xl font-bold tracking-tight text-slate-50 md:text-4xl">
             Your conversations deserve better
           </h2>
           <p className="mx-auto mt-4 max-w-md text-base text-slate-400">
@@ -532,12 +509,8 @@ function CTA() {
             </Link>
             <button
               type="button"
-              onClick={() => {
-                const text = encodeURIComponent("Check out Nexus - a private, encrypted chat app:");
-                const url = encodeURIComponent(window.location.origin);
-                window.open(`https://wa.me/?text=${text}%20${url}`, "_blank");
-              }}
-              className="inline-flex items-center gap-2 rounded-xl bg-[#25D366]/10 border border-[#25D366]/20 px-5 py-3 text-sm font-medium text-[#25D366] transition hover:bg-[#25D366]/20"
+              onClick={handleShare}
+              className="inline-flex items-center gap-2 rounded-xl bg-[#25D366]/10 border border-[#25D366]/20 px-5 py-3 text-sm font-medium text-[#25D366] transition hover:bg-[#25D366]/20 active:scale-[0.97]"
             >
               <Share2 className="h-4 w-4" />
               Share on WhatsApp
@@ -554,7 +527,7 @@ function CTA() {
 /* ------------------------------------------------------------------ */
 function Footer() {
   return (
-    <footer className="border-t border-white/5 py-12">
+    <footer className="border-t border-white/[0.06] py-12">
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 text-xs text-slate-500 md:flex-row">
         <div className="flex items-center gap-2">
           <div className="flex h-6 w-6 items-center justify-center rounded-md bg-accent/20">
@@ -573,7 +546,7 @@ function Footer() {
           <a href="#how-it-works" className="transition hover:text-slate-300">
             How it works
           </a>
-          <a href="#whatsapp" className="transition hover:text-slate-300">
+          <a href="#share" className="transition hover:text-slate-300">
             Share
           </a>
         </div>
@@ -594,7 +567,7 @@ export default function LandingPage() {
       <Hero />
       <Features />
       <HowItWorks />
-      <WhatsAppIntegration />
+      <ShareSection />
       <Security />
       <CTA />
       <Footer />

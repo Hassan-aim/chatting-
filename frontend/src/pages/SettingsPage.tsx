@@ -21,8 +21,8 @@ import {
 function SectionHeader({ icon: Icon, title }: { icon: typeof User; title: string }) {
   return (
     <div className="flex items-center gap-2 mb-4">
-      <Icon className="h-4 w-4 text-accent" strokeWidth={2} />
-      <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-300">
+      <Icon className="h-4 w-4 text-accent" strokeWidth={1.5} />
+      <h2 className="text-sm font-semibold text-slate-200">
         {title}
       </h2>
     </div>
@@ -60,18 +60,15 @@ export function SettingsPage() {
   const { clear, refreshToken, setUser } = useAuthStore();
   const { theme, applyTheme } = useTheme();
 
-  // Profile form
   const [username, setUsername] = useState(user?.username || "");
   const [email, setEmail] = useState(user?.email || "");
   const [profileLoading, setProfileLoading] = useState(false);
 
-  // Password form
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordLoading, setPasswordLoading] = useState(false);
 
-  // Notification preferences
   const [notifSounds, setNotifSounds] = useState(() => {
     return localStorage.getItem("nexus-notif-sounds") !== "false";
   });
@@ -142,13 +139,12 @@ export function SettingsPage() {
   };
 
   return (
-    <div className="min-h-[100dvh] bg-ink-950">
-      {/* Header */}
-      <header className="sticky top-0 z-40 flex items-center gap-3 border-b border-white/5 bg-ink-950/80 backdrop-blur-xl px-4 py-3">
+    <div className="min-h-[100dvh] bg-surface">
+      <header className="sticky top-0 z-40 flex items-center gap-3 border-b border-white/[0.06] bg-surface/80 backdrop-blur-xl px-4 py-3">
         <button
           type="button"
           onClick={() => navigate("/chat")}
-          className="grid h-8 w-8 place-items-center rounded-lg text-slate-400 transition-all hover:bg-white/10 hover:text-white active:-translate-y-[1px]"
+          className="grid h-8 w-8 place-items-center rounded-lg text-slate-400 transition-all hover:bg-white/[0.06] hover:text-white active:scale-[0.95]"
           aria-label="Back to chat"
         >
           <ArrowLeft className="h-5 w-5" />
@@ -156,13 +152,12 @@ export function SettingsPage() {
         <h1 className="text-lg font-semibold text-slate-100">Settings</h1>
       </header>
 
-      <div className="mx-auto max-w-2xl px-4 py-8 space-y-8">
-        {/* Profile */}
+      <div className="mx-auto max-w-2xl px-4 py-8 space-y-6">
         <motion.section
-          initial={reduce ? false : { opacity: 0, y: 16 }}
+          initial={reduce ? false : { opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className="rounded-2xl border border-white/5 bg-ink-900 p-6"
+          className="rounded-2xl border border-white/[0.06] bg-surface-raised p-6"
         >
           <SectionHeader icon={User} title="Profile" />
           <form onSubmit={handleProfileSubmit} className="space-y-4">
@@ -175,7 +170,7 @@ export function SettingsPage() {
                 pattern="[a-zA-Z0-9_]+"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="mt-1"
+                className="mt-1.5"
               />
             </label>
             <label className="block text-sm">
@@ -185,7 +180,7 @@ export function SettingsPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="mt-1"
+                className="mt-1.5"
               />
             </label>
             <Button type="submit" disabled={profileLoading} className="w-full">
@@ -194,49 +189,25 @@ export function SettingsPage() {
           </form>
         </motion.section>
 
-        {/* Password */}
         <motion.section
-          initial={reduce ? false : { opacity: 0, y: 16 }}
+          initial={reduce ? false : { opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
-          className="rounded-2xl border border-white/5 bg-ink-900 p-6"
+          className="rounded-2xl border border-white/[0.06] bg-surface-raised p-6"
         >
           <SectionHeader icon={Lock} title="Change Password" />
           <form onSubmit={handlePasswordSubmit} className="space-y-4">
             <label className="block text-sm">
               <span className="text-slate-400">Current password</span>
-              <Input
-                type="password"
-                required
-                autoComplete="current-password"
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
-                className="mt-1"
-              />
+              <Input type="password" required autoComplete="current-password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} className="mt-1.5" />
             </label>
             <label className="block text-sm">
               <span className="text-slate-400">New password</span>
-              <Input
-                type="password"
-                required
-                minLength={8}
-                autoComplete="new-password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                className="mt-1"
-              />
+              <Input type="password" required minLength={8} autoComplete="new-password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} className="mt-1.5" />
             </label>
             <label className="block text-sm">
               <span className="text-slate-400">Confirm new password</span>
-              <Input
-                type="password"
-                required
-                minLength={8}
-                autoComplete="new-password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="mt-1"
-              />
+              <Input type="password" required minLength={8} autoComplete="new-password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="mt-1.5" />
             </label>
             <Button type="submit" disabled={passwordLoading} className="w-full">
               {passwordLoading ? "Changing..." : "Change password"}
@@ -244,12 +215,11 @@ export function SettingsPage() {
           </form>
         </motion.section>
 
-        {/* Theme */}
         <motion.section
-          initial={reduce ? false : { opacity: 0, y: 16 }}
+          initial={reduce ? false : { opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="rounded-2xl border border-white/5 bg-ink-900 p-6"
+          className="rounded-2xl border border-white/[0.06] bg-surface-raised p-6"
         >
           <SectionHeader icon={Palette} title="Appearance" />
           <div className="grid grid-cols-3 gap-3">
@@ -264,8 +234,8 @@ export function SettingsPage() {
                 onClick={() => applyTheme(opt.value)}
                 className={`flex flex-col items-center gap-2 rounded-xl border p-4 transition ${
                   theme === opt.value
-                    ? "border-accent bg-accent/10 text-accent"
-                    : "border-white/5 bg-ink-800 text-slate-400 hover:border-white/10 hover:text-slate-200"
+                    ? "border-accent bg-accent/[0.12] text-accent"
+                    : "border-white/[0.06] bg-surface-elevated text-slate-400 hover:border-white/[0.12] hover:text-slate-200"
                 }`}
               >
                 <opt.icon className="h-5 w-5" />
@@ -275,12 +245,11 @@ export function SettingsPage() {
           </div>
         </motion.section>
 
-        {/* Notifications */}
         <motion.section
-          initial={reduce ? false : { opacity: 0, y: 16 }}
+          initial={reduce ? false : { opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-          className="rounded-2xl border border-white/5 bg-ink-900 p-6"
+          className="rounded-2xl border border-white/[0.06] bg-surface-raised p-6"
         >
           <SectionHeader icon={Bell} title="Notifications" />
           <div className="space-y-4">
@@ -299,14 +268,13 @@ export function SettingsPage() {
           </div>
         </motion.section>
 
-        {/* Danger zone */}
         <motion.section
-          initial={reduce ? false : { opacity: 0, y: 16 }}
+          initial={reduce ? false : { opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="rounded-2xl border border-rose-500/20 bg-ink-900 p-6"
+          className="rounded-2xl border border-red-500/10 bg-surface-raised p-6"
         >
-          <h2 className="text-sm font-semibold text-rose-400 mb-4">Account</h2>
+          <h2 className="text-sm font-semibold text-red-400 mb-4">Account</h2>
           <Button variant="danger" onClick={handleLogout} className="w-full gap-2">
             <LogOut className="h-4 w-4" />
             Sign out
@@ -340,11 +308,11 @@ function ToggleRow({
         aria-checked={enabled}
         onClick={onToggle}
         className={`relative h-6 w-11 rounded-full transition-colors ${
-          enabled ? "bg-accent" : "bg-zinc-700"
+          enabled ? "bg-accent" : "bg-white/[0.1]"
         }`}
       >
         <span
-          className={`absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white transition-transform ${
+          className={`absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform ${
             enabled ? "translate-x-5" : ""
           }`}
         />

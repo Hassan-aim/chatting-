@@ -10,7 +10,7 @@ import { Skeleton } from "../common/Skeleton";
 import { NewConversationModal } from "./NewConversationModal";
 import { cn } from "../../utils/cn";
 import { Plus, LogOut, MessageSquare, Search, Settings, Pin, PinOff, BellOff, Bell } from "lucide-react";
-import { useQueryClient } from "@tanstack/react-query"
+import { useQueryClient } from "@tanstack/react-query";
 
 interface ConversationListProps {
   activeId?: string;
@@ -44,52 +44,52 @@ export function ConversationList({ activeId }: ConversationListProps) {
 
   return (
     <>
-      {/* Header */}
-      <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
+      <div className="flex items-center justify-between border-b border-white/[0.06] px-4 py-3">
         <div className="flex items-center gap-2">
-          <MessageSquare className="h-5 w-5 text-accent" />
-          <h1 className="text-lg font-semibold text-slate-100">Nexus</h1>
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-accent/20">
+            <MessageSquare className="h-3.5 w-3.5 text-accent" strokeWidth={2} />
+          </div>
+          <h1 className="text-base font-semibold text-slate-100">Nexus</h1>
         </div>
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-0.5">
           <button
             type="button"
             onClick={() => navigate("/search")}
-            className="grid h-8 w-8 place-items-center rounded-lg text-slate-400 transition-all hover:bg-white/10 hover:text-white active:-translate-y-[1px]"
+            className="grid h-8 w-8 place-items-center rounded-lg text-slate-400 transition-all hover:bg-white/[0.06] hover:text-white active:scale-[0.95]"
             aria-label="Search messages"
           >
-            <Search className="h-4 w-4 stroke-[1.5]" />
+            <Search className="h-4 w-4" strokeWidth={1.5} />
           </button>
           <button
             type="button"
             onClick={() => navigate("/settings")}
-            className="grid h-8 w-8 place-items-center rounded-lg text-slate-400 transition-all hover:bg-white/10 hover:text-white active:-translate-y-[1px]"
+            className="grid h-8 w-8 place-items-center rounded-lg text-slate-400 transition-all hover:bg-white/[0.06] hover:text-white active:scale-[0.95]"
             aria-label="Settings"
           >
-            <Settings className="h-4 w-4 stroke-[1.5]" />
+            <Settings className="h-4 w-4" strokeWidth={1.5} />
           </button>
           <button
             type="button"
             onClick={() => setNewModalOpen(true)}
-            className="grid h-8 w-8 place-items-center rounded-lg text-slate-400 transition-all hover:bg-white/10 hover:text-white active:-translate-y-[1px]"
+            className="grid h-8 w-8 place-items-center rounded-lg text-slate-400 transition-all hover:bg-white/[0.06] hover:text-white active:scale-[0.95]"
             aria-label="New conversation"
           >
-            <Plus className="h-5 w-5 stroke-[1.5]" />
+            <Plus className="h-5 w-5" strokeWidth={1.5} />
           </button>
           <button
             type="button"
             onClick={handleLogout}
-            className="grid h-8 w-8 place-items-center rounded-lg text-slate-400 transition-all hover:bg-white/10 hover:text-white active:-translate-y-[1px] md:hidden"
+            className="grid h-8 w-8 place-items-center rounded-lg text-slate-400 transition-all hover:bg-white/[0.06] hover:text-white active:scale-[0.95] md:hidden"
             aria-label="Sign out"
           >
-            <LogOut className="h-4 w-4 stroke-[1.5]" />
+            <LogOut className="h-4 w-4" strokeWidth={1.5} />
           </button>
         </div>
       </div>
 
-      {/* Current user badge */}
       {currentUser && (
-        <div className="border-b border-white/10 px-4 py-2">
-          <div className="flex items-center gap-2">
+        <div className="border-b border-white/[0.06] px-4 py-2.5">
+          <div className="flex items-center gap-2.5">
             <UserAvatar name={currentUser.username} online size="sm" />
             <span className="truncate text-sm text-slate-300">
               {currentUser.username}
@@ -98,7 +98,6 @@ export function ConversationList({ activeId }: ConversationListProps) {
         </div>
       )}
 
-      {/* List */}
       <nav className="scrollbar-thin flex-1 overflow-y-auto" aria-label="Conversations">
         {isLoading && (
           <div className="space-y-1 p-2">
@@ -121,7 +120,7 @@ export function ConversationList({ activeId }: ConversationListProps) {
             <button
               type="button"
               onClick={() => setNewModalOpen(true)}
-              className="mt-3 inline-flex items-center gap-1.5 rounded-xl bg-accent px-4 py-2 text-sm font-medium text-white transition hover:bg-accent-muted"
+              className="mt-3 inline-flex items-center gap-1.5 rounded-xl bg-accent px-4 py-2 text-sm font-medium text-white transition hover:bg-accent-muted active:scale-[0.97]"
             >
               <Plus className="h-4 w-4" />
               Start a conversation
@@ -183,9 +182,9 @@ function ConversationItem({
         className={cn(
           "flex w-full items-center gap-3 px-3 py-3 text-left transition",
           active
-            ? "bg-accent/10 border-r-2 border-accent"
-            : "hover:bg-white/5",
-          conversation.is_pinned && "bg-white/[0.03]",
+            ? "bg-accent/[0.08] border-r-2 border-accent"
+            : "hover:bg-white/[0.03]",
+          conversation.is_pinned && !active && "bg-white/[0.02]",
         )}
         aria-current={active ? "page" : undefined}
       >
@@ -205,9 +204,9 @@ function ConversationItem({
             )}
           </div>
           <div className="flex items-center justify-between">
-            <p className="truncate text-xs text-slate-400">
+            <p className="truncate text-xs text-slate-500">
               {conversation.is_muted && (
-                <BellOff className="inline h-3 w-3 mr-1 text-slate-500" />
+                <BellOff className="inline h-3 w-3 mr-1 text-slate-600" />
               )}
               {conversation.last_message_preview || "No messages yet"}
             </p>
@@ -222,15 +221,14 @@ function ConversationItem({
         </div>
       </button>
 
-      {/* Quick actions on hover */}
-      <div className="absolute right-2 top-1/2 -translate-y-1/2 hidden group-hover:flex items-center gap-1 bg-ink-900/90 rounded-lg px-1 py-0.5 shadow-lg z-10">
+      <div className="absolute right-2 top-1/2 -translate-y-1/2 hidden group-hover:flex items-center gap-0.5 bg-surface-raised/90 rounded-lg px-1 py-0.5 shadow-lg z-10 border border-white/[0.06]">
         <button
           type="button"
           onClick={(e) => {
             e.stopPropagation();
             onTogglePin();
           }}
-          className="grid h-6 w-6 place-items-center rounded text-slate-400 transition hover:bg-white/10 hover:text-white"
+          className="grid h-6 w-6 place-items-center rounded text-slate-500 transition hover:bg-white/[0.06] hover:text-slate-200"
           aria-label={conversation.is_pinned ? "Unpin" : "Pin"}
         >
           {conversation.is_pinned ? <PinOff className="h-3 w-3" /> : <Pin className="h-3 w-3" />}
@@ -241,7 +239,7 @@ function ConversationItem({
             e.stopPropagation();
             onToggleMute();
           }}
-          className="grid h-6 w-6 place-items-center rounded text-slate-400 transition hover:bg-white/10 hover:text-white"
+          className="grid h-6 w-6 place-items-center rounded text-slate-500 transition hover:bg-white/[0.06] hover:text-slate-200"
           aria-label={conversation.is_muted ? "Unmute" : "Mute"}
         >
           {conversation.is_muted ? <Bell className="h-3 w-3" /> : <BellOff className="h-3 w-3" />}
