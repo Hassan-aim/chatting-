@@ -38,7 +38,7 @@ services:
       - key: JWT_SECRET_KEY
         generateValue: true
       - key: CORS_ORIGINS
-        value: "https://chatting-orcin-pi.vercel.app"
+        value: "https://chatting-orcin-pi.vercel.app,https://chatting-git-main-hb-d0a8.vercel.app,https://chatting-hb-d0a8.vercel.app"
       - key: STORAGE_PATH
         value: ./storage
     healthCheckPath: /health
