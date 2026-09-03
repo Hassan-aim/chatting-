@@ -1,4 +1,23 @@
 services:
+  # MySQL Database running as a Private Service on Render
+  - type: pserv
+    name: nexus-mysql
+    image: mysql:8.0
+    disk:
+      name: mysql-data
+      mountPath: /var/lib/mysql
+      sizeGB: 10
+    envVars:
+      - key: MYSQL_ROOT_PASSWORD
+        generateValue: true
+      - key: MYSQL_DATABASE
+        value: private_chat
+      - key: MYSQL_USER
+        value: chat
+      - key: MYSQL_PASSWORD
+        generateValue: true
+
+  # Backend Web Service
   - type: web
     name: nexus-backend
     runtime: docker
@@ -6,10 +25,16 @@ services:
     envVars:
       - key: ENVIRONMENT
         value: production
+      # DATABASE_URL and DATABASE_URL_SYNC must be set manually in the Render dashboard!
+      # After the nexus-mysql service is created, go to the Render dashboard for nexus-mysql
+      # to get the generated MYSQL_PASSWORD.
+      # Then, set these in the nexus-backend Environment Variables:
+      #   DATABASE_URL=mysql+aiomysql://chat:<YOUR_MYSQL_PASSWORD>@nexus-mysql:3306/private_chat
+      #   DATABASE_URL_SYNC=mysql+pymysql://chat:<YOUR_MYSQL_PASSWORD>@nexus-mysql:3306/private_chat
       - key: DATABASE_URL
-        value: "mysql+aiomysql://user:password@your-mysql-host:3306/private_chat"
+        sync: false
       - key: DATABASE_URL_SYNC
-        value: "mysql+pymysql://user:password@your-mysql-host:3306/private_chat"
+        sync: false
       - key: JWT_SECRET_KEY
         generateValue: true
       - key: CORS_ORIGINS

@@ -1,7 +1,7 @@
 from functools import lru_cache
 from typing import Literal
 
-from pydantic import field_validator
+from pydantic import field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -18,7 +18,49 @@ class Settings(BaseSettings):
     backend_port: int = 8000
 
     database_url: str = "mysql+aiomysql://chat:changeme@localhost:3306/private_chat"
-    database_url_sync: str = "mysql+pymysql://chat:changeme@localhost:3306/private_chat"
+    database_url_sync: str = ""
+
+    @field_validator("database_url", mode="before")
+    @classmethod
+    def strip_database_url(cls, value: str) -> str:
+        return value.strip()
+
+    @model_validator(mode="after")
+    def derive_sync_url(self) -> "Settings":
+        """Auto-derive database_url_sync and detect SSL from URLs."""
+        if not self.database_url_sync:
+            url = self.database_url
+            url = url.replace("mysql+aiomysql://", "mysql+pymysql://")
+            url = url.replace("postgresql+asyncpg://", "postgresql+psycopg2://")
+            url = url.replace("+aiomysql://", "+pymysql://")
+            url = url.replace("+asyncpg://", "+psycopg2://")
+            self.database_url_sync = url
+
+        # Detect and strip ?ssl=true from URLs (pymysql doesn't understand it;
+        # SSL is configured via connect_args instead).
+        self.database_ssl = (
+            "+ssl=true" in self.database_url.lower()
+            or "?ssl=true" in self.database_url.lower()
+        )
+        self.database_url = self._strip_ssl_param(self.database_url)
+        self.database_url_sync = self._strip_ssl_param(self.database_url_sync)
+        return self
+
+    @staticmethod
+    def _strip_ssl_param(url: str) -> str:
+        """Remove ?ssl=true or &ssl=true from a database URL."""
+        lower = url.lower()
+        idx = lower.find("?ssl=true")
+        if idx != -1:
+            return url[:idx] + url[idx + len("?ssl=true") :]
+        idx = lower.find("&ssl=true")
+        if idx != -1:
+            return url[:idx] + url[idx + len("&ssl=true") :]
+        return url
+
+    # Whether the database connection should use SSL (detected from URL).
+    database_ssl: bool = False
+
     db_pool_size: int = 10
     db_max_overflow: int = 20
 

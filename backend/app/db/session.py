@@ -24,6 +24,8 @@ def _engine_kwargs() -> dict:
     else:
         kwargs["pool_size"] = settings.db_pool_size
         kwargs["max_overflow"] = settings.db_max_overflow
+        if settings.database_ssl:
+            kwargs["connect_args"] = {"ssl": {}}
     return kwargs
 
 
